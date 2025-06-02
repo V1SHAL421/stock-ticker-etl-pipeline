@@ -1,0 +1,1 @@
+"""The entry point for the Glue job to transform and load S3 data into Redshift"""

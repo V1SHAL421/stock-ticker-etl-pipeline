@@ -1,0 +1,1 @@
+"""Setup of Spark configurations"""
