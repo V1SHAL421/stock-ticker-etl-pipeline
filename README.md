@@ -32,3 +32,28 @@ https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html
 The data warehouse used for this project is Amazon Redshift due to its performance, scalability and efficiency. The schema design for the data has been optimised for SQL queries using Athena.
 
 https://docs.aws.amazon.com/redshift/latest/dg/welcome.html
+
+## Getting Started
+
+1. **Create and activate virtual environment**
+
+On Windows, please use source .venv/Scripts/activate
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+2. **Install pip-tools**:
+
+```bash
+pip install pip-tools
+```
+
+3. **Install project dependencies**
+
+On Windows, use WSL or Git Bash to run make commands.
+
+```bash
+make install
+```
