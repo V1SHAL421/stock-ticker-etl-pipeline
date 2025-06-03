@@ -13,8 +13,7 @@ class MainLogger:
         self.logger = logging.getLogger("Logger")
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler()
-        logging_format = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
-        formatter = logging.Formatter(logging_format)
+        formatter = logging.Formatter(format)
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
 
