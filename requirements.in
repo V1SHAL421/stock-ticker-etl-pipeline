@@ -2,3 +2,5 @@ boto3
 pyspark
 pyyaml
 pytest
+pandas
+yfinance
