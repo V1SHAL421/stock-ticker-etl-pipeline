@@ -157,6 +157,7 @@ def test_info_logs(caplog, setup):
     logger.info("This is a test info message")
     
     assert "test info" in caplog.text
+    assert "INFO" in caplog.text
 
 def test_warning_logs(caplog, setup):
     """Tests that the logger outputs warning level logs.
@@ -176,6 +177,7 @@ def test_warning_logs(caplog, setup):
     logger.warning("This is a test warning message")
     
     assert "test warning" in caplog.text
+    assert "WARNING" in caplog.text
 
 def test_error_logs(caplog, setup):
     """Tests that the logger outputs error level logs.
@@ -195,6 +197,7 @@ def test_error_logs(caplog, setup):
     logger.error("This is a test error message")
     
     assert "test error" in caplog.text
+    assert "ERROR" in caplog.text
 
 
 def test_critical_logs(caplog, setup):
@@ -215,5 +218,6 @@ def test_critical_logs(caplog, setup):
     logger.critical("This is a test critical message")
     
     assert "test critical" in caplog.text
+    assert "CRITICAL" in caplog.text
 
 
