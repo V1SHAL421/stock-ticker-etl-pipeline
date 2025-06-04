@@ -9,7 +9,7 @@ class MainLogger:
             cls._instance._initialise()
         return cls._instance
     
-    def _initialise(self, format: str ="%(asctime)s - %(levelname)s - %(name)s - %(message)s"):
+    def _initialise(self, format: str = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"):
         self.logger = logging.getLogger("Logger")
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler()
