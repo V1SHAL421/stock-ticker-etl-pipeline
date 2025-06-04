@@ -1,4 +1,5 @@
 import logging
+from freezegun import freeze_time
 import pytest
 from unittest.mock import patch
 from utils.main_logger import MainLogger
@@ -139,6 +140,7 @@ def test_debug_logs_does_not_output(caplog, setup):
     
     assert "test debug" not in caplog.text
 
+
 def test_info_logs(caplog, setup):
     """Tests that the logger outputs info level logs.
     
@@ -170,7 +172,7 @@ def test_warning_logs(caplog, setup):
         - Calling warning() on the logger
     
     Then:
-        - The logger should output the message
+        - The logger should output the message within the log
     """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
@@ -190,7 +192,7 @@ def test_error_logs(caplog, setup):
         - Calling error() on the logger
     
     Then:
-        - The logger should output the message
+        - The logger should output the message within the log
     """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
@@ -211,7 +213,7 @@ def test_critical_logs(caplog, setup):
         - Calling critical() on the logger
     
     Then:
-        - The logger should output the message
+        - The logger should output the message within the log
     """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
@@ -219,5 +221,3 @@ def test_critical_logs(caplog, setup):
     
     assert "test critical" in caplog.text
     assert "CRITICAL" in caplog.text
-
-
