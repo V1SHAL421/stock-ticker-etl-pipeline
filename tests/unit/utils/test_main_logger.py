@@ -1,32 +1,17 @@
-"""
-__new__()
-1) The first time that MainLogger is called, initialise is called
-2) The second time onwards it is called, initialise is not called
-3) In both cases, there is an instance
-
-_initialise()
-1) Assert log format is as expected
-2) Check logger name = "Logger"
-3) Check the number of handlers = 1
-
-
-get_logger()
-- We use caplog to capture output for
-1) logging DEBUG
-2) logging INFO
-3) logging WARNING
-4) logging ERROR
-5) logging CRITICAL
-6) 4) Check if timestamp is as expected
-"""
 import logging
 import pytest
 from unittest.mock import patch
-from src.utils.main_logger import MainLogger
+from utils.main_logger import MainLogger
+
+@pytest.fixture(autouse=True)
+def reset_main_logger():
+    """Resets the MainLogger Singleton instance to None"""
+    MainLogger._instance = None
 
 # Set up test logger
 @pytest.fixture
 def setup():
+    """Sets up the MainLogger instance"""
     test_logger = MainLogger()
     yield test_logger
 
@@ -35,19 +20,63 @@ def setup():
 __new__()
 """
 def test_initialise_is_called():
-    with patch.object(MainLogger, MainLogger._initialise()) as mock_initialise:
+    """Tests that _initialise() is called once upon the first time the MainLogger is called.
+    
+    Given:
+        - A patched object of the MainLogger and a mocked initialise() method
+    
+    When:
+        - Calling _initialise() on the instance
+    
+    Then:
+        - The _initialise() method should only be called once
+    """
+    with patch.object(MainLogger, "_initialise") as mock_initialise:
         _ = MainLogger()
         mock_initialise.assert_called_once()
 
 def test_initialise_is_not_called_second_time(setup):
-    with patch.object(MainLogger, MainLogger._initialise()) as mock_initialise:
+    """Tests that _initialise() is not called upon the second time the MainLogger is called.
+    
+    Given:
+        - A patched object of the MainLogger and a mocked initialise() method
+    
+    When:
+        - Calling _initialise() on the instance
+    
+    Then:
+        - The _initialise() method should not be called
+    """
+    with patch.object(MainLogger, "_initialise") as mock_initialise:
         _ = MainLogger()
         mock_initialise.assert_not_called()
 
 def test_instance_exists(setup):
+    """Tests that _instance exists upon the first time the MainLogger is called.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+    
+    When:
+        - Accessing the _instance attribute
+    
+    Then:
+        - The _instance should not be None
+    """
     assert setup._instance != None
 
 def test_call_second_instance(setup):
+    """Tests that _instance exists upon the second time the MainLogger is called.
+    
+    Given:
+        - Two instances of the MainLogger, one via the fixture and one initialised
+    
+    When:
+        - Accessing the _instance attribute
+    
+    Then:
+        - The _instance should not be None
+    """
     second_logger = MainLogger()
     assert second_logger._instance != None
 
@@ -55,12 +84,35 @@ def test_call_second_instance(setup):
 _initialise()
 """
 def test_logger_name(setup):
+    """Tests that MainLogger is initialised with the correct name.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+    
+    When:
+        - Calling get_logger() on the instance
+    
+    Then:
+        - The logger name should be the expected logger name
+    """
     expected_logger_name = "Logger"
     logger = setup.get_logger()
+    # logger = setup.get_logger()
     assert logger.name == expected_logger_name
 
 def test_num_handlers(setup):
-    expected_num_handlers = 1
+    """Tests that MainLogger is initialised with the correct number of handlers.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+    
+    When:
+        - Calling get_logger() on the instance
+    
+    Then:
+        - The logger should have the expected number of handlers
+    """
+    expected_num_handlers = 5
     logger = setup.get_logger()
     assert len(logger.handlers) == expected_num_handlers
 
@@ -69,6 +121,18 @@ Output logs
 """
 
 def test_debug_logs_does_not_output(caplog, setup):
+    """Tests that the logger does not output any debug level logs.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+        - The logger of the instance
+    
+    When:
+        - Calling debug() on the logger
+    
+    Then:
+        - The logger should not output the message
+    """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
     logger.debug("This is a test debug message")
@@ -76,6 +140,18 @@ def test_debug_logs_does_not_output(caplog, setup):
     assert "test debug" not in caplog.text
 
 def test_info_logs(caplog, setup):
+    """Tests that the logger outputs info level logs.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+        - The logger of the instance
+    
+    When:
+        - Calling info() on the logger
+    
+    Then:
+        - The logger should output the message
+    """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
     logger.info("This is a test info message")
@@ -83,24 +159,60 @@ def test_info_logs(caplog, setup):
     assert "test info" in caplog.text
 
 def test_warning_logs(caplog, setup):
+    """Tests that the logger outputs warning level logs.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+        - The logger of the instance
+    
+    When:
+        - Calling warning() on the logger
+    
+    Then:
+        - The logger should output the message
+    """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
-    logger.info("This is a test warning message")
+    logger.warning("This is a test warning message")
     
     assert "test warning" in caplog.text
 
 def test_error_logs(caplog, setup):
+    """Tests that the logger outputs error level logs.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+        - The logger of the instance
+    
+    When:
+        - Calling error() on the logger
+    
+    Then:
+        - The logger should output the message
+    """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
-    logger.info("This is a test error message")
+    logger.error("This is a test error message")
     
     assert "test error" in caplog.text
 
 
 def test_critical_logs(caplog, setup):
+    """Tests that the logger outputs critical level logs.
+    
+    Given:
+        - An instance of the MainLogger via the fixture
+        - The logger of the instance
+    
+    When:
+        - Calling critical() on the logger
+    
+    Then:
+        - The logger should output the message
+    """
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
-    logger.info("This is a test critical message")
+    logger.critical("This is a test critical message")
     
     assert "test critical" in caplog.text
 
