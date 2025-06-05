@@ -54,9 +54,6 @@ peewee==3.18.1
     # via yfinance
 platformdirs==4.3.8
     # via yfinance
-pathspec==0.12.1
-    # via mypy
-
 pluggy==1.6.0
     # via pytest
 protobuf==6.31.1
@@ -99,10 +96,6 @@ typing-extensions==4.14.0
     #   mypy
 tzdata==2025.2
     # via pandas
-
-typing-extensions==4.14.0
-    # via mypy
-
 urllib3==2.4.0
     # via
     #   botocore
