@@ -2,7 +2,7 @@ from functools import wraps
 from time import sleep
 
 
-def safe_run(retries: int = 3, delay: int = 10):
+def safe_run(retries: int = 3, delay: int = 5):
     """Decorator factory that adds try/except and retry functionality to a function.
 
     Args:

@@ -20,6 +20,9 @@ jobs:
       - name: Check for Code Quality
         run: make quality # Involves linting, formatting and type checking
 
+      - name: Run Tests
+        run: make test
+
             
             
 
