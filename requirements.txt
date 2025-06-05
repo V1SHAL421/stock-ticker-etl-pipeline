@@ -16,8 +16,16 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
+
+mypy==1.16.0
+    # via -r requirements.in
+mypy-extensions==1.1.0
+    # via mypy
 packaging==25.0
     # via pytest
+pathspec==0.12.1
+    # via mypy
+
 pluggy==1.6.0
     # via pytest
 py4j==0.10.9.9
@@ -30,9 +38,16 @@ python-dateutil==2.9.0.post0
     # via botocore
 pyyaml==6.0.2
     # via -r requirements.in
+ruff==0.11.12
+    # via -r requirements.in
+
 s3transfer==0.13.0
     # via boto3
 six==1.17.0
     # via python-dateutil
+
+typing-extensions==4.14.0
+    # via mypy
+
 urllib3==2.4.0
     # via botocore
