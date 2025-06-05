@@ -19,6 +19,7 @@ def fails_once():
         raise Exception("An exception has been raised")
     return True
 
+@pytest.mark.integration
 def test_logs_output_in_safe_run(caplog):
     """Tests that the logger outputs the expected logs in the safe_run function.
 

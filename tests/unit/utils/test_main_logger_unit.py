@@ -23,7 +23,7 @@ def setup():
 __new__()
 """
 
-
+@pytest.mark.unit
 def test_initialise_is_called():
     """Tests that _initialise() is called once upon the first time the MainLogger is called.
 
@@ -40,7 +40,7 @@ def test_initialise_is_called():
         _ = MainLogger()
         mock_initialise.assert_called_once()
 
-
+@pytest.mark.unit
 def test_initialise_is_not_called_second_time(setup):
     """Tests that _initialise() is not called upon the second time the MainLogger is called.
 
@@ -72,7 +72,7 @@ def test_instance_exists(setup):
     """
     assert setup._instance is not None
 
-
+@pytest.mark.unit
 def test_call_second_instance(setup):
     """Tests that _instance exists upon the second time the MainLogger is called.
 
@@ -93,7 +93,7 @@ def test_call_second_instance(setup):
 _initialise()
 """
 
-
+@pytest.mark.unit
 def test_logger_name(setup):
     """Tests that MainLogger is initialised with the correct name.
 
@@ -116,7 +116,7 @@ def test_logger_name(setup):
 Output logs
 """
 
-
+@pytest.mark.unit
 def test_debug_logs_does_not_output(caplog, setup):
     """Tests that the logger does not output any debug level logs.
 
@@ -136,7 +136,7 @@ def test_debug_logs_does_not_output(caplog, setup):
 
     assert "test debug" not in caplog.text
 
-
+@pytest.mark.unit
 def test_info_logs(caplog, setup):
     """Tests that the logger outputs info level logs.
 
@@ -157,7 +157,7 @@ def test_info_logs(caplog, setup):
     assert "test info" in caplog.text
     assert "INFO" in caplog.text
 
-
+@pytest.mark.unit
 def test_warning_logs(caplog, setup):
     """Tests that the logger outputs warning level logs.
 
@@ -178,7 +178,7 @@ def test_warning_logs(caplog, setup):
     assert "test warning" in caplog.text
     assert "WARNING" in caplog.text
 
-
+@pytest.mark.unit
 def test_error_logs(caplog, setup):
     """Tests that the logger outputs error level logs.
 
@@ -199,7 +199,7 @@ def test_error_logs(caplog, setup):
     assert "test error" in caplog.text
     assert "ERROR" in caplog.text
 
-
+@pytest.mark.unit
 def test_critical_logs(caplog, setup):
     """Tests that the logger outputs critical level logs.
 
