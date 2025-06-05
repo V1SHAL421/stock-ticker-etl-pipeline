@@ -34,28 +34,26 @@ jmespath==1.0.1
     #   botocore
 multitasking==0.0.11
     # via yfinance
-numpy==2.2.6
-    # via
-    #   pandas
-    #   yfinance
-
 mypy==1.16.0
     # via -r requirements.in
 mypy-extensions==1.1.0
     # via mypy
+numpy==2.2.6
+    # via
+    #   pandas
+    #   yfinance
 packaging==25.0
     # via pytest
 pandas==2.2.3
     # via
     #   -r requirements.in
     #   yfinance
+pathspec==0.12.1
+    # via mypy
 peewee==3.18.1
     # via yfinance
 platformdirs==4.3.8
     # via yfinance
-pathspec==0.12.1
-    # via mypy
-
 pluggy==1.6.0
     # via pytest
 protobuf==6.31.1
@@ -82,7 +80,6 @@ requests==2.32.3
     # via yfinance
 ruff==0.11.12
     # via -r requirements.in
-
 s3transfer==0.13.0
     # via boto3
 six==1.17.0
@@ -90,13 +87,11 @@ six==1.17.0
 soupsieve==2.7
     # via beautifulsoup4
 typing-extensions==4.14.0
-    # via beautifulsoup4
+    # via
+    #   beautifulsoup4
+    #   mypy
 tzdata==2025.2
     # via pandas
-
-typing-extensions==4.14.0
-    # via mypy
-
 urllib3==2.4.0
     # via
     #   botocore
