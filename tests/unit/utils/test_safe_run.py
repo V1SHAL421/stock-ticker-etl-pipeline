@@ -1,27 +1,6 @@
 import pytest
 from utils.safe_run import safe_run
 
-"""
-Define a function to be decorated
-
-Incorrect parameters:
-1) retries is less than or equal to 0
-2) delay is less than or equal to 0
-3) retries is an incorrect format
-4) delay is an incorrect format
-
-Without changing parameters:
-1) Succeeds
-2) Fails once then succeeds
-3) Fails everytime
-
-With changing parameters
-1) Succeeds
-2) Fails once then succeeds
-3) Fails everytime
-"""
-
-
 def dummy():
     """Dummy function that always returns True
 
