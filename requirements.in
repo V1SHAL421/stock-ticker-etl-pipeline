@@ -6,6 +6,4 @@ pandas
 yfinance
 ruff
 mypy
-pandas
-yfinance
 pytest-mock
