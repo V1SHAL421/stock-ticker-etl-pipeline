@@ -65,6 +65,10 @@ pycparser==2.22
 pyspark==4.0.0
     # via -r requirements.in
 pytest==8.3.5
+    # via
+    #   -r requirements.in
+    #   pytest-mock
+pytest-mock==3.14.1
     # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via
