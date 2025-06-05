@@ -10,3 +10,5 @@ quality:
 	ruff check .
 	ruff format .
 	mypy .
+test:
+	pytest
