@@ -190,17 +190,17 @@ def test_safe_run_fails_once():
 """The following tests have the same test plan as the first half but have the safe_run parameters updated"""
 
 
-@safe_run(5, 5)
+@safe_run(5, 1)
 def success_func_updated():
     return True
 
 
-@safe_run(5, 5)
+@safe_run(5, 1)
 def failing_func_updated():
     raise Exception("An exception has been raised")
 
 
-@safe_run(5, 5)
+@safe_run(5, 1)
 def fails_once_updated():
     if attempt_tracker["count"] == 0:
         attempt_tracker["count"] += 1
