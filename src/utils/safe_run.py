@@ -1,11 +1,20 @@
 from functools import wraps
 from time import sleep
 
+
 def safe_run(retries: int = 3, delay: int = 10):
-    """Decorator factory that involves try/except and retry functionality into inputted function
+    """Decorator factory that adds try/except and retry functionality to a function.
+
     Args:
-        retries (int): The maximum number of retries to carry out the function
-        delay (int): The number of seconds between each retry
+        retries (int): Maximum number of retry attempts.
+        delay (int): Delay in seconds between retries.
+
+    Returns:
+        Callable: A decorator that applies the retry logic.
+
+    Raises:
+        TypeError: If `retries` or `delay` is not an integer.
+        ValueError: If `retries` or `delay` is not a positive integer.
     """
 
     if not isinstance(retries, int) or not isinstance(delay, int):
@@ -19,15 +28,19 @@ def safe_run(retries: int = 3, delay: int = 10):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            for retry in range(1, retries + 1):
+            for retry in range(1, retries + 1):  # Iterate through each retry attempt
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     # TODO: SWITCH TO LOGGER
                     print(f"This function has failed with the error: {e}")
                     print(f"This is attempt number {retry}")
-                    if retry == retries:
+                    if (
+                        retry == retries
+                    ):  # If the maximum number of retries has been reached
                         raise
-                    sleep(delay)
+                    sleep(delay)  # Delay between retry attempts
+
         return wrapper
+
     return decorator

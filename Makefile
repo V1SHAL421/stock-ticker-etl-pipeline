@@ -9,7 +9,7 @@ install:
 quality:
 	ruff check .
 	ruff format .
-	mypy .
+	mypy src/
   
 test:
 	pytest
