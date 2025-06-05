@@ -1,6 +1,5 @@
 import logging
 
-
 class MainLogger:
     """
     Represents the main logger
@@ -8,7 +7,6 @@ class MainLogger:
     Attributes:
         _instance (MainLogger or None): Instance of the MainLogger or None
     """
-
     _instance = None
 
     def __new__(cls):
