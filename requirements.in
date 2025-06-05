@@ -4,3 +4,6 @@ pyyaml
 pytest
 pandas
 yfinance
+ruff
+mypy
+
