@@ -3,12 +3,10 @@ import pytest
 from unittest.mock import patch
 from utils.main_logger import MainLogger
 
-
 @pytest.fixture(autouse=True)
 def reset_main_logger():
     """Resets the MainLogger Singleton instance to None"""
     MainLogger._instance = None
-
 
 # Set up test logger
 @pytest.fixture
@@ -16,7 +14,6 @@ def setup():
     """Sets up the MainLogger instance"""
     test_logger = MainLogger()
     yield test_logger
-
 
 # Test Cases
 """
@@ -134,7 +131,6 @@ def test_num_handlers(setup):
     logger = setup.get_logger()
     assert len(logger.handlers) == expected_num_handlers
 
-
 """
 Output logs
 """
@@ -222,7 +218,6 @@ def test_error_logs(caplog, setup):
     caplog.set_level(logging.INFO)
     logger = setup.get_logger()
     logger.error("This is a test error message")
-
     assert "test error" in caplog.text
     assert "ERROR" in caplog.text
 
