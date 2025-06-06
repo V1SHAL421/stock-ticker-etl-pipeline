@@ -28,3 +28,4 @@ class SparkSessionManager:
             raise Exception("Spark Session has not been initialised")
 
         SparkSessionManager.spark_session.stop()
+        SparkSessionManager.spark_session = None
