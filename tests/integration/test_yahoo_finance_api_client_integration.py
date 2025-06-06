@@ -77,6 +77,6 @@ def test_fetch_market_data_success(test_yfinance_client):
     result = test_yfinance_client.fetch_market_data("AMZN", "1d", "1m")
     print(f"The resultant stock data is {result}")
     print(f"The data type of open is {type(result['Open'])}")
-    assert isinstance(result['Open'], float)
-    assert isinstance(result['Close'], float)
+    assert pd.api.types.is_float_dtype(result['Open'])
+    assert pd.api.types.is_float_dtype(result['Close'])
 
