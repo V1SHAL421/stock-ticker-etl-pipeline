@@ -1,5 +1,6 @@
 from functools import wraps
 from time import sleep
+from utils.main_logger import MainLogger
 
 
 def safe_run(retries: int = 3, delay: int = 5):
@@ -28,13 +29,14 @@ def safe_run(retries: int = 3, delay: int = 5):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            logger = MainLogger().get_logger()
             for retry in range(1, retries + 1):  # Iterate through each retry attempt
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     # TODO: SWITCH TO LOGGER
-                    print(f"This function has failed with the error: {e}")
-                    print(f"This is attempt number {retry}")
+                    logger.error(f"This function has failed with the error: {e}")
+                    logger.info(f"This is attempt number {retry}")
                     if (
                         retry == retries
                     ):  # If the maximum number of retries has been reached
