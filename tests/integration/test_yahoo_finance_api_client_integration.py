@@ -3,6 +3,7 @@ import pytest
 from infrastructure.apis.yahoo_finance_api_client import YFinanceClient
 from utils.main_logger import MainLogger
 
+
 @pytest.fixture
 def test_yfinance_client():
     test_logger = MainLogger().get_logger()
