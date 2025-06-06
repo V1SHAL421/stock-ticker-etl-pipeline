@@ -30,7 +30,6 @@ def dummy():
     """
     return True
 
-
 @pytest.mark.unit
 def test_retries_less_than_or_equal_to_zero():
     """Tests exception handling when retries are less than or equal to zero
@@ -46,7 +45,6 @@ def test_retries_less_than_or_equal_to_zero():
     """
     with pytest.raises(ValueError, match="'retries' has to be a positive integer"):
         safe_run(0, 10)(dummy)
-
 
 @pytest.mark.unit
 def test_delay_less_than_or_equal_to_zero():
@@ -64,7 +62,6 @@ def test_delay_less_than_or_equal_to_zero():
     with pytest.raises(ValueError, match="'delay' has to be a positive integer"):
         safe_run(3, 0)(dummy)
 
-
 @pytest.mark.unit
 def test_retries_incorrect_type():
     """Tests exception handling when retries are of an incorrect type
@@ -80,7 +77,6 @@ def test_retries_incorrect_type():
     """
     with pytest.raises(TypeError, match="The decorator parameters must be integers"):
         safe_run("three", 10)(dummy)
-
 
 @pytest.mark.unit
 def test_delay_incorrect_type():
@@ -137,7 +133,6 @@ def fails_once():
         raise Exception("An exception has been raised")
     return True
 
-
 @pytest.mark.unit
 def test_safe_run_succeeds():
     """Tests the success function wrapped with safe_run returns True
@@ -153,7 +148,6 @@ def test_safe_run_succeeds():
         - Returns True
     """
     assert success_func()
-
 
 @pytest.mark.unit
 def test_safe_run_fails():
@@ -171,7 +165,6 @@ def test_safe_run_fails():
     """
     with pytest.raises(Exception, match="An exception has been raised"):
         failing_func()
-
 
 @pytest.mark.unit
 def test_safe_run_fails_once():
@@ -214,17 +207,14 @@ def fails_once_updated():
         raise Exception("An exception has been raised")
     return True
 
-
 @pytest.mark.unit
 def test_safe_run_succeeds_after_parameter_update():
     assert success_func_updated()
-
 
 @pytest.mark.unit
 def test_safe_run_fails_after_parameter_update():
     with pytest.raises(Exception, match="An exception has been raised"):
         failing_func_updated()
-
 
 @pytest.mark.unit
 def test_safe_run_fails_once_after_parameter_update():
