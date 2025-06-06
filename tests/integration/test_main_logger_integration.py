@@ -4,6 +4,7 @@ from utils.safe_run import safe_run
 
 attempt_tracker = {"count": 0}
 
+
 @safe_run()
 def fails_once():
     """Returns True if the counter is not zero, otherwise it increments counter and raises Exception
@@ -17,6 +18,8 @@ def fails_once():
         raise Exception("An exception has been raised")
     return True
 
+
+@pytest.mark.integration
 def test_logs_output_in_safe_run(caplog):
     """Tests that the logger outputs the expected logs in the safe_run function.
     Given:
