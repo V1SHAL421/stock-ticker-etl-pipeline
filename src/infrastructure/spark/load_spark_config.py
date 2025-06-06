@@ -1,7 +1,10 @@
 import yaml
 from pyspark import SparkConf
 
+from utils.safe_run import safe_run
 
+
+@safe_run()
 def load_spark_config(path: str = "src/config/spark_config.yaml") -> SparkConf:
     with open(path, "r") as file:
         spark_config = yaml.safe_load(file)
