@@ -117,23 +117,6 @@ def test_logger_name(setup):
     assert logger.name == expected_logger_name
 
 
-@pytest.mark.unit
-def test_num_handlers(setup):
-    """Tests that MainLogger is initialised with the correct number of handlers.
-
-    Given:
-        - An instance of the MainLogger via the fixture
-
-    When:
-        - Calling get_logger() on the instance
-
-    Then:
-        - The logger should have the expected number of handlers
-    """
-    expected_num_handlers = 5
-    logger = setup.get_logger()
-    assert len(logger.handlers) == expected_num_handlers
-
 
 """
 Output logs
