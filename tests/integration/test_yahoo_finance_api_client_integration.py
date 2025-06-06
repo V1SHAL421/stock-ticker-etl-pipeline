@@ -10,7 +10,7 @@ def test_yfinance_client():
     yield test_yf_client
 
 @pytest.mark.integration
-def test_fetch_market_data_with_invalid_ticker(test_yfinance_client):
+def test_fetch_market_data_with_invalid_ticker(caplog, test_yfinance_client):
     """Tests that fetch_market_data raises a ValueError with an unavailable ticker inputted.
 
     Given:
@@ -26,8 +26,10 @@ def test_fetch_market_data_with_invalid_ticker(test_yfinance_client):
     with pytest.raises(ValueError, match="This ticker is not available"):
         test_yfinance_client.fetch_market_data("HDFS")
 
+    assert "This ticker is not available" in caplog.text
+
 @pytest.mark.integration
-def test_fetch_market_data_with_invalid_period(test_yfinance_client):
+def test_fetch_market_data_with_invalid_period(caplog, test_yfinance_client):
     """Tests that fetch_market_data raises a ValueError with an unavailable period length inputted.
 
     Given:
@@ -42,9 +44,11 @@ def test_fetch_market_data_with_invalid_period(test_yfinance_client):
 
     with pytest.raises(ValueError, match="This period length is not available"):
         test_yfinance_client.fetch_market_data("AMZN", "1hour")
+    
+    assert "This period length is not available" in caplog.text
 
 @pytest.mark.integration
-def test_fetch_market_data_with_invalid_interval(test_yfinance_client):
+def test_fetch_market_data_with_invalid_interval(caplog, test_yfinance_client):
     """Tests that fetch_market_data raises a ValueError with an unavailable interval inputted.
 
     Given:
@@ -59,9 +63,11 @@ def test_fetch_market_data_with_invalid_interval(test_yfinance_client):
 
     with pytest.raises(ValueError, match="This interval is not available"):
         test_yfinance_client.fetch_market_data("AMZN", "1d", "1hour")
+    
+    assert "This interval is not available" in caplog.text
 
 @pytest.mark.integration
-def test_fetch_market_data_success(test_yfinance_client):
+def test_fetch_market_data_success(caplog, test_yfinance_client):
     """Tests that fetch_market_data raises a ValueError with an unavailable period length inputted.
 
     Given:
@@ -77,6 +83,8 @@ def test_fetch_market_data_success(test_yfinance_client):
     result = test_yfinance_client.fetch_market_data("AMZN", "1d", "1m")
     print(f"The resultant stock data is {result}")
     print(f"The data type of open is {type(result['Open'])}")
+
     assert pd.api.types.is_float_dtype(result['Open'])
     assert pd.api.types.is_float_dtype(result['Close'])
+    assert "The stock data retrieved from ticker" in caplog.text
 
