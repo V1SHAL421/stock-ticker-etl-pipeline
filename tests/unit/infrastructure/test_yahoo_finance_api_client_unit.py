@@ -3,6 +3,7 @@ import pytest
 from infrastructure.apis.yahoo_finance_api_client import YFinanceClient
 
 
+
 @pytest.mark.unit
 def test_fetch_market_data_with_invalid_ticker(mocker):
     """Tests that fetch_market_data raises a ValueError with an unavailable ticker inputted.
