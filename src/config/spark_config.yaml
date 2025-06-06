@@ -1,0 +1,4 @@
+spark:
+  app_name: main_spark_app
+  master: local[*]
+  shuffle_partitions: 100
