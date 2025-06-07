@@ -8,9 +8,10 @@ from utils.safe_run import safe_run
 
 class SparkSessionManager:
     """Represents the Spark Session Manager
-    
+
     Attributes:
         - spark_session (SparkSession or None): Contains the singleton instance of the SparkSession"""
+
     spark_session = None
 
     def __init__(self, logger):
