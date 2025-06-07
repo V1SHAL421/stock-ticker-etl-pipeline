@@ -4,7 +4,6 @@ import pandas as pd
 
 from utils.safe_run import safe_run
 
-
 @safe_run()
 def pandas_into_spark_df(
     spark_session: SparkSession, pandas_df: pd.DataFrame, logger: Logger
