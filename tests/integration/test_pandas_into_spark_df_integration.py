@@ -48,7 +48,7 @@ def test_pandas_into_spark_df_with_invalid_test_logger(setup):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
 
 
-@pytest.mark.spark_df_success
+@pytest.mark.integration
 def test_pandas_into_spark_df_success(setup):
     test_spark_session = setup[0]
     pandas_df = setup[1]
