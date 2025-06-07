@@ -2,6 +2,8 @@ import pandas as pd
 import pytest
 from infrastructure.apis.yahoo_finance_api_client import YFinanceClient
 
+
+
 @pytest.mark.unit
 def test_fetch_market_data_with_invalid_ticker(mocker):
     """Tests that fetch_market_data raises a ValueError with an unavailable ticker inputted.
@@ -31,6 +33,7 @@ def test_fetch_market_data_with_invalid_ticker(mocker):
 
     with pytest.raises(ValueError, match="This ticker is not available"):
         test_client.fetch_market_data("HDFS")
+
 
 @pytest.mark.unit
 def test_fetch_market_data_with_invalid_period(mocker):
@@ -62,6 +65,7 @@ def test_fetch_market_data_with_invalid_period(mocker):
     with pytest.raises(ValueError, match="This period length is not available"):
         test_client.fetch_market_data("AMZN", "1hour")
 
+
 @pytest.mark.unit
 def test_fetch_market_data_with_invalid_interval(mocker):
     """Tests that fetch_market_data raises a ValueError with an unavailable interval inputted.
@@ -91,6 +95,7 @@ def test_fetch_market_data_with_invalid_interval(mocker):
 
     with pytest.raises(ValueError, match="This interval is not available"):
         test_client.fetch_market_data("AMZN", "1d", "1hour")
+
 
 @pytest.mark.unit
 def test_fetch_market_data_success(mocker):
