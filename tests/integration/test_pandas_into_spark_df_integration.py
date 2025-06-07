@@ -3,7 +3,6 @@ from infrastructure.spark.spark_session_manager import SparkSessionManager
 from utils.main_logger import MainLogger
 from utils.pandas_into_spark_df import pandas_into_spark_df
 import pandas as pd
-from pyspark.sql.functions import array_contains
 from pyspark.sql import dataframe as sp_df
 
 
@@ -13,11 +12,10 @@ def setup():
     test_logger = main_logger.get_logger()
     spark_session_manager = SparkSessionManager(test_logger)
     spark_session = spark_session_manager.get_spark_session()
-    d = {'Open': [100.0], 'Close': [101.0]}
+    d = {"Open": [100.0], "Close": [101.0]}
     df = pd.DataFrame(data=d)
 
     yield spark_session, df, test_logger
-    
 
 
 @pytest.mark.integration
@@ -29,6 +27,7 @@ def test_pandas_into_spark_df_with_invalid_spark_session(setup):
     with pytest.raises(Exception):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
 
+
 @pytest.mark.integration
 def test_pandas_into_spark_df_with_invalid_pandas_df(setup):
     test_spark_session = setup[0]
@@ -38,6 +37,7 @@ def test_pandas_into_spark_df_with_invalid_pandas_df(setup):
     with pytest.raises(Exception):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
 
+
 @pytest.mark.integration
 def test_pandas_into_spark_df_with_invalid_test_logger(setup):
     test_spark_session = setup[0]
@@ -46,6 +46,7 @@ def test_pandas_into_spark_df_with_invalid_test_logger(setup):
 
     with pytest.raises(Exception):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
+
 
 @pytest.mark.spark_df_success
 def test_pandas_into_spark_df_success(setup):
