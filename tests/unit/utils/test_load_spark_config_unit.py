@@ -1,7 +1,7 @@
 import pytest
 from pyspark import SparkConf
 import yaml
-from infrastructure.spark.load_spark_config import load_spark_config
+from utils.load_spark_config import load_spark_config
 from unittest.mock import mock_open, patch
 
 

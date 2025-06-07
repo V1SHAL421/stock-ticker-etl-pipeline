@@ -2,7 +2,7 @@
 
 from pyspark.sql import SparkSession
 
-from infrastructure.spark.load_spark_config import load_spark_config
+from utils.load_spark_config import load_spark_config
 from utils.safe_run import safe_run
 
 

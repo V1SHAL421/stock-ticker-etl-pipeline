@@ -1,7 +1,7 @@
 from pyspark import SparkConf
 import pytest
 import yaml
-from infrastructure.spark.load_spark_config import load_spark_config
+from utils.load_spark_config import load_spark_config
 
 
 @pytest.mark.integration
