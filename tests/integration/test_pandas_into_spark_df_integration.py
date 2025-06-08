@@ -4,10 +4,13 @@ from utils.main_logger import MainLogger
 from utils.pandas_into_spark_df import pandas_into_spark_df
 import pandas as pd
 from pyspark.sql import dataframe as sp_df
+from pyspark.sql import Row
+from pyspark.testing.utils import assertDataFrameEqual
 
 
 @pytest.fixture
 def setup():
+    """Setup the Spark session, Pandas DataFrame and test logger"""
     main_logger = MainLogger()
     test_logger = main_logger.get_logger()
     spark_session_manager = SparkSessionManager(test_logger)
@@ -20,9 +23,19 @@ def setup():
 
 @pytest.mark.integration
 def test_pandas_into_spark_df_with_invalid_spark_session(setup):
+    """Tests that pandas_into_spark_df with an invalid Spark session raises an Exception
+
+    Given:
+        - A test Pandas DataFrame
+        - A test Spark Session set to None
+        - A test logger
+    When:
+        - pandas_into_spark_df() is called with these parameters
+
+    Then:
+        - An Exception is raised"""
+    _, pandas_df, test_logger = setup
     test_spark_session = None
-    pandas_df = setup[1]
-    test_logger = setup[2]
 
     with pytest.raises(Exception):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
@@ -30,9 +43,19 @@ def test_pandas_into_spark_df_with_invalid_spark_session(setup):
 
 @pytest.mark.integration
 def test_pandas_into_spark_df_with_invalid_pandas_df(setup):
-    test_spark_session = setup[0]
+    """Tests that pandas_into_spark_df with an invalid Pandas DataFrame raises an Exception
+
+    Given:
+        - A test Pandas DataFrame set to None
+        - A test Spark Session
+        - A test logger
+    When:
+        - pandas_into_spark_df() is called with these parameters
+
+    Then:
+        - An Exception is raised"""
+    test_spark_session, _, test_logger = setup
     pandas_df = None
-    test_logger = setup[2]
 
     with pytest.raises(Exception):
         pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
@@ -40,8 +63,18 @@ def test_pandas_into_spark_df_with_invalid_pandas_df(setup):
 
 @pytest.mark.integration
 def test_pandas_into_spark_df_with_invalid_test_logger(setup):
-    test_spark_session = setup[0]
-    pandas_df = setup[1]
+    """Tests that pandas_into_spark_df with an invalid logger raises an Exception
+
+    Given:
+        - A test Pandas DataFrame
+        - A test Spark Session
+        - A test logger set to None
+    When:
+        - pandas_into_spark_df() is called with these parameters
+
+    Then:
+        - An Exception is raised"""
+    test_spark_session, pandas_df, _ = setup
     test_logger = None
 
     with pytest.raises(Exception):
@@ -50,22 +83,27 @@ def test_pandas_into_spark_df_with_invalid_test_logger(setup):
 
 @pytest.mark.integration
 def test_pandas_into_spark_df_success(setup):
-    test_spark_session = setup[0]
-    pandas_df = setup[1]
-    test_logger = setup[2]
+    """Tests that pandas_into_spark_df is successful
+
+    Given:
+        - A test Pandas DataFrame
+        - A test Spark Session
+        - A test logger
+    When:
+        - pandas_into_spark_df() is called with these parameters
+
+    Then:
+        - The expected Spark DataFrame is returned"""
+    test_spark_session, pandas_df, test_logger = setup
 
     spark_df = pandas_into_spark_df(test_spark_session, pandas_df, test_logger)
 
-    expected_open_value = [100.0]
-    expected_close_value = [101.0]
+    expected_df = test_spark_session.createDataFrame([Row(Open=100.0, Close=101.0)])
 
-    print(f"The Spark DataFrame returned is {spark_df}")
+    print(f"The spark_df is {spark_df} and the expected df is {expected_df}")
+    assertDataFrameEqual(spark_df, expected_df)
 
     assert isinstance(spark_df, sp_df.DataFrame)
+    assert "Open" in spark_df.columns
+    assert "Close" in spark_df.columns
 
-    rows = spark_df.select("Open", "Close").collect()
-    open_vals = [row["Open"] for row in rows]
-    close_vals = [row["Close"] for row in rows]
-
-    assert open_vals == expected_open_value
-    assert close_vals == expected_close_value
