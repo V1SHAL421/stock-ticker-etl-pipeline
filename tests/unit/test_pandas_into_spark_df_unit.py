@@ -43,6 +43,27 @@ def test_pandas_into_spark_df_with_invalid_spark_session(mocker, pandas_df):
     with pytest.raises(Exception):
         pandas_into_spark_df(mock_spark_session, pandas_df, mock_logger)
 
+@pytest.mark.spark_df_success
+def test_pandas_into_spark_df_with_invalid_pandas_df(mocker, pandas_df):
+    """Tests that pandas_into_spark_df with an invalid Spark session raises an Exception
+
+    Given:
+        - A test Pandas DataFrame
+        - A mock Spark Session set to None
+        - A mock logger
+
+    When:
+        - pandas_into_spark_df() is called with these parameters
+
+    Then:
+        - An Exception is raised"""
+    mock_spark_session = mocker.Mock()
+    mock_pandas_df = None
+    mock_logger = mocker.Mock()
+
+    with pytest.raises(TypeError):
+        pandas_into_spark_df(mock_spark_session, mock_pandas_df, mock_logger)
+
 
 @pytest.mark.unit
 def test_pandas_into_spark_df_with_invalid_logger(mocker, pandas_df, spark_df):
