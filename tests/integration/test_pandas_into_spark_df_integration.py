@@ -106,4 +106,3 @@ def test_pandas_into_spark_df_success(setup):
     assert isinstance(spark_df, sp_df.DataFrame)
     assert "Open" in spark_df.columns
     assert "Close" in spark_df.columns
-

@@ -86,6 +86,6 @@ def test_pandas_into_spark_df_success(mocker, pandas_df, spark_df):
     mock_spark_session.createDataFrame.return_value = spark_df
 
     result = pandas_into_spark_df(mock_spark_session, pandas_df, mock_logger)
-    
+
     assert isinstance(result, DataFrame)
     assertDataFrameEqual(spark_df, result)
