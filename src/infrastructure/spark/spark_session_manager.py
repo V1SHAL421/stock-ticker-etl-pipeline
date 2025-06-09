@@ -4,6 +4,7 @@ from pyspark.sql import SparkSession
 
 from utils.load_spark_config import load_spark_config
 from utils.safe_run import safe_run
+import os
 
 
 class SparkSessionManager:
@@ -28,6 +29,18 @@ class SparkSessionManager:
             SparkSessionManager.spark_session = SparkSession.builder.config(
                 conf=load_spark_config()
             ).getOrCreate()
+
+        os.environ["AWS_PROFILE"] = "vishal-sso" # Sets AWS profile
+
+        # Sets S3A credentials provider to use the profile credentials
+        SparkSessionManager.spark_session.sparkContext._jsc.hadoopConfiguration().set(
+            "fs.s3a.aws.credentials.provider", "com.amazonaws.auth.profile.ProfileCredentialsProvider"
+        )
+        """
+        The AWS_PROFILE environment variable is set to use AWS SSO profile so that Spark uses the temporary credentials
+        The S3A connector for Spark is configured to use the ProfileCredentialsProvider class, which looks up credentials
+        from the AWS CLI profile.
+        """
 
         self.logger.info("Spark session has been initialised")
         return SparkSessionManager.spark_session
