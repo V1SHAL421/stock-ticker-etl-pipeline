@@ -1,0 +1,3 @@
+s3:
+  raw_bucket: "s3://raw-tick-data-bucket/"
+  clean_bucket: "s3://clean-tick-data-bucket/"
