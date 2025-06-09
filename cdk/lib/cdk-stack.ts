@@ -10,9 +10,9 @@ export class CdkStack extends Stack {
     // Defining the Main Raw S3 Bucket
     const main_raw_bucket = new Bucket(
       this, // Refers to the stack that the bucket will be deployed to
-      "S3Bucket", // ID
+      "MainRawS3Bucket", // ID
       {
-        bucketName: "raw-tick-data-bucket",
+        bucketName: "main-raw-tick-data-bucket",
         encryption: BucketEncryption.S3_MANAGED,
         versioned: true,
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL, // No one can access bucket without permissions
@@ -23,7 +23,7 @@ export class CdkStack extends Stack {
     // Defining the Test Raw S3 Bucket
     const test_raw_bucket = new Bucket(
       this, // Refers to the stack that the bucket will be deployed to
-      "S3Bucket", // ID
+      "TestRawS3Bucket", // ID
       {
         bucketName: "test-raw-tick-data-bucket",
         encryption: BucketEncryption.S3_MANAGED,
