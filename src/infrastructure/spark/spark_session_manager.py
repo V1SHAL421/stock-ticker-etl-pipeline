@@ -9,9 +9,10 @@ import os
 
 class SparkSessionManager:
     """Represents the Spark Session Manager
-    
+
     Attributes:
         - spark_session (SparkSession or None): Contains the singleton instance of the SparkSession"""
+
     spark_session = None
 
     def __init__(self, logger):
@@ -30,11 +31,12 @@ class SparkSessionManager:
                 conf=load_spark_config()
             ).getOrCreate()
 
-        os.environ["AWS_PROFILE"] = "vishal-sso" # Sets AWS profile
+        os.environ["AWS_PROFILE"] = "vishal-sso"  # Sets AWS profile
 
         # Sets S3A credentials provider to use the profile credentials
         SparkSessionManager.spark_session.sparkContext._jsc.hadoopConfiguration().set(
-            "fs.s3a.aws.credentials.provider", "com.amazonaws.auth.profile.ProfileCredentialsProvider"
+            "fs.s3a.aws.credentials.provider",
+            "com.amazonaws.auth.profile.ProfileCredentialsProvider",
         )
         """
         The AWS_PROFILE environment variable is set to use AWS SSO profile so that Spark uses the temporary credentials

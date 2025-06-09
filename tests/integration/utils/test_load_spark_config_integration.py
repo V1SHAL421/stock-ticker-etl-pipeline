@@ -7,14 +7,14 @@ from utils.load_spark_config import load_spark_config
 @pytest.mark.integration
 def test_load_spark_config_missing_spark_key(tmp_path):
     """Tests loading the Spark configuration with a missing Spark key
-    
+
     Given:
         - A config path using tmp_path
         - YAML content without a Spark key
-        
+
     When:
         - load_spark_config() is called
-        
+
     Then:
         - An Exception is raised"""
     yaml_content = {
@@ -32,14 +32,14 @@ def test_load_spark_config_missing_spark_key(tmp_path):
 @pytest.mark.integration
 def test_load_spark_config_missing_app_name_key(tmp_path):
     """Tests loading the Spark configuration with a missing app_name key
-    
+
     Given:
         - A config path using tmp_path
         - YAML content without an app_name key
-        
+
     When:
         - load_spark_config() is called
-        
+
     Then:
         - An Exception is raised"""
     yaml_content = {
@@ -57,14 +57,14 @@ def test_load_spark_config_missing_app_name_key(tmp_path):
 @pytest.mark.integration
 def test_load_spark_config_missing_master_key(tmp_path):
     """Tests loading the Spark configuration with a missing master key
-    
+
     Given:
         - A config path using tmp_path
         - YAML content without a master key
-        
+
     When:
         - load_spark_config() is called
-        
+
     Then:
         - An Exception is raised"""
     yaml_content = {
@@ -82,13 +82,13 @@ def test_load_spark_config_missing_master_key(tmp_path):
 @pytest.mark.integration
 def test_load_spark_config_file_not_found(tmp_path):
     """Tests loading the Spark configuration with a missing app_name key
-    
+
     Given:
         - An incorrect filepath
-        
+
     When:
         - load_spark_config() is called
-        
+
     Then:
         - An Exception is raised"""
     with pytest.raises(Exception):
@@ -101,10 +101,10 @@ def test_load_spark_config_success(tmp_path):
     Given:
         - A config path using tmp_path
         - YAML content written to the config file
-        
+
     When:
         - load_spark_config() is called
-        
+
     Then:
         - The expected content is returned in a SparkConf object"""
     yaml_content = {"spark": {"app_name": "integration-test-app", "master": "local[*]"}}

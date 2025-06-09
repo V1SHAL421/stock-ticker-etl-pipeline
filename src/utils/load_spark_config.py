@@ -8,9 +8,9 @@ from utils.safe_run import safe_run
 def load_spark_config(path: str = "src/config/spark_config.yaml") -> SparkConf:
     """Loads the Spark configuration using fields from the Spark configuration YAML file
 
-        Args:
-            - path: The file path of the Spark configuration YAML file
-        """
+    Args:
+        - path: The file path of the Spark configuration YAML file
+    """
     with open(path, "r") as file:
         spark_config = yaml.safe_load(file)
 
