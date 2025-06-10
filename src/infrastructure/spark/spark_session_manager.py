@@ -60,8 +60,6 @@ class SparkSessionManager:
         #     if "24h" in value.lower():
         #         print(f"{key} = {value}")
 
-
-
         return SparkSessionManager.spark_session
 
     @safe_run()
