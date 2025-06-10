@@ -4,7 +4,6 @@ spark:
   jars_packages: org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.397
   hadoop_aws_configs:
     fs.s3a.aws.credentials.provider: com.amazonaws.auth.DefaultAWSCredentialsProviderChain
-    # fs.s3a.aws.credentials.provider: com.amazonaws.auth.profile.ProfileCredentialsProvider
     spark.hadoop.fs.s3a.impl: org.apache.hadoop.fs.s3a.S3AFileSystem
     fs.s3a.vectored.read.min.seek.size: 131072
     spark.hadoop.fs.s3a.vectored.read.max.merged.size: 2097152

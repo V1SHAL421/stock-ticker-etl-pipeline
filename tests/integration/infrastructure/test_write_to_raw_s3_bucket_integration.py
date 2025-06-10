@@ -26,7 +26,7 @@ def setup():
     yield test_logger, test_spark_session_manager
 
 
-@pytest.mark.current
+@pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_invalid_s3_test_path(setup):
     test_logger, test_spark_session_manager = setup
     spark = test_spark_session_manager.get_spark_session()
@@ -41,7 +41,7 @@ def test_write_raw_data_to_s3_bucket_invalid_s3_test_path(setup):
         )
 
 
-@pytest.mark.current
+@pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_empty_df(s3_test_path, setup):
     test_logger, test_spark_session_manager = setup
 
@@ -52,7 +52,7 @@ def test_write_raw_data_to_s3_bucket_empty_df(s3_test_path, setup):
         )
 
 
-@pytest.mark.current
+@pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_success(s3_test_path, setup):
     test_logger, test_spark_session_manager = setup
     spark = test_spark_session_manager.get_spark_session()

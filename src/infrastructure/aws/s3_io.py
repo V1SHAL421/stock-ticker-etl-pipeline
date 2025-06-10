@@ -28,17 +28,23 @@ def write_raw_data_to_s3_bucket(
 ):
     if df is None or df.isEmpty():
         raise ValueError("The Spark DataFrame does not have any data")
-    
+
     if not s3_filepath.startswith("s3a://"):
         raise ValueError("The S3 file path is of an incorrect format")
 
+    print("Validation Checks Passed")
+
     spark_session_manager.get_spark_session()
+
+    print("Get Spark Session Passed")
 
     """
     The zip code column is partitioned using the modulo operation % 5 to ensure the data is evenly
     distributed across 5 partitions. This avoids data skew and reduces shuffle overhead.
     """
     df = df.withColumn("date_col", F.current_date())
+
+    print("Add DF Column Passed")
 
     """
     useS3ListImplementation: optimizes S3 reads for better handling of file listing
@@ -48,6 +54,8 @@ def write_raw_data_to_s3_bucket(
     df.write.option("useS3ListImplementation", "true").option(
         "compression", "snappy"
     ).partitionBy("date_col").mode("overwrite").parquet(s3_filepath)
+
+    print("Write has passed")
 
     logger.info("The Spark DataFrame has been written to the raw S3 bucket")
 

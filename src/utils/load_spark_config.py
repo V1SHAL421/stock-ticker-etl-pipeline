@@ -37,11 +37,6 @@ def load_spark_config(path: str = "src/config/spark_config.yaml") -> SparkConf:
     for key, value in spark_attributes["hadoop_aws_configs"].items():
         conf.set(key, value)
 
-    # conf.set("fs.s3a.access.key", os.environ["AWS_ACCESS_KEY_ID"])
-    # conf.set("fs.s3a.secret.key", os.environ["AWS_SECRET_ACCESS_KEY"])
-    # conf.set("fs.s3a.session.token", os.environ["AWS_SESSION_TOKEN"])
-    # conf.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.TemporaryAWSCredentialsProvider")
-
     inject_boto3_sso_credentials(conf, profile_name="vishal-sso")
 
     return conf
