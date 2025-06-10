@@ -1,8 +1,5 @@
 on: [push, pull_request] # Runs the job upon pushing a commit or creating a pull request
 
-env:
-  AWS_REGION: "eu-west-2"
-
 permissions:
   id-token: write
   contents: read
@@ -19,7 +16,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
           role-to-assume: arn:aws:iam::187065639894:role/github-oidc
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: "eu-west-2"
 
       - name: Set Up Python
         uses: actions/setup-python@v5
