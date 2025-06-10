@@ -12,6 +12,13 @@ from utils.safe_run import safe_run
 
 @safe_run()
 def load_s3_file_path(path="src/config/infra/s3.yaml"):
+    """Loads the file path for the raw S3 bucket with date partitioning
+
+    Args:
+        - path (str): The file path to the configuration file for S3
+
+    Returns:
+        - raw_s3_bucket_path_with_date (str): The file path to the raw S3 bucket with date partition"""
     with open(path, "r") as file:
         config = yaml.safe_load(file)
     raw_s3_bucket_path = config["s3"]["raw_bucket"]
@@ -26,6 +33,20 @@ def write_raw_data_to_s3_bucket(
     logger: Logger,
     s3_filepath: str,
 ):
+    (
+        """Loads the file path for the raw S3 bucket with date partitioning
+    
+    Args:
+        - df (DataFrame): The Spark DataFrame
+        - spark_session_manager (SparkSessionManager): The class that sets up the Spark session
+        - logger (Logger): The logger
+        - s3_filepath (str): The filepath to the S3 bucket
+        
+    Raises:
+        - ValueError: "The Spark DataFrame does not have any data"""
+        ""
+    )
+
     if df is None or df.isEmpty():
         raise ValueError("The Spark DataFrame does not have any data")
 

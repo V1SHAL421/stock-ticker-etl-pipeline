@@ -10,6 +10,7 @@ from pyspark.sql import Row
 
 @pytest.fixture
 def s3_test_path():
+    """Loads the file path to the test S3 bucket with today's date"""
     with open("src/config/infra/s3.yaml", "r") as file:
         config = yaml.safe_load(file)
 
@@ -20,6 +21,7 @@ def s3_test_path():
 
 @pytest.fixture
 def setup():
+    """Loads the test logger and Spark session manager"""
     main_logger = MainLogger()
     test_logger = main_logger.get_logger()
     test_spark_session_manager = SparkSessionManager(test_logger)
@@ -28,6 +30,19 @@ def setup():
 
 @pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_invalid_s3_test_path(setup):
+    """Tests the Spark Session Manager retrieves the Spark session
+
+    Given:
+        - A test logger
+        - A test Spark session
+        - An invalid test S3 file path
+        - A Spark DataFrame
+
+    When:
+        - write_raw_data_to_s3_bucket() is called
+
+    Then:
+        - A ValueError is raised"""
     test_logger, test_spark_session_manager = setup
     spark = test_spark_session_manager.get_spark_session()
     written_df = spark.createDataFrame(
@@ -43,6 +58,19 @@ def test_write_raw_data_to_s3_bucket_invalid_s3_test_path(setup):
 
 @pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_empty_df(s3_test_path, setup):
+    """Tests the Spark Session Manager retrieves the Spark session
+
+    Given:
+        - A test logger
+        - A test Spark session
+        - A test S3 file path
+        - No Spark DataFrame
+
+    When:
+        - write_raw_data_to_s3_bucket() is called
+
+    Then:
+        - A ValueError is raised"""
     test_logger, test_spark_session_manager = setup
 
     test_logger.info(f"The output filepath is {s3_test_path}")
@@ -54,6 +82,19 @@ def test_write_raw_data_to_s3_bucket_empty_df(s3_test_path, setup):
 
 @pytest.mark.integration
 def test_write_raw_data_to_s3_bucket_success(s3_test_path, setup):
+    """Tests the Spark Session Manager retrieves the Spark session
+
+    Given:
+        - A test logger
+        - A test Spark session
+        - A test S3 file path
+        - A Spark DataFrame
+
+    When:
+        - write_raw_data_to_s3_bucket() is called
+
+    Then:
+        - The data is written to the test S3 bucket"""
     test_logger, test_spark_session_manager = setup
     spark = test_spark_session_manager.get_spark_session()
     written_df = spark.createDataFrame(
