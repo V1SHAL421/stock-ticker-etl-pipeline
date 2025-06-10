@@ -1,7 +1,6 @@
 """Interactions with Amazon S3"""
 
 from datetime import date
-from datetime import date
 from logging import Logger
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql import functions as F
