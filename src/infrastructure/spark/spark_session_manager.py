@@ -45,6 +45,23 @@ class SparkSessionManager:
         """
 
         self.logger.info("Spark session has been initialised")
+
+        # for k, v in SparkSessionManager.spark_session.sparkContext.getConf().getAll():
+        #     print(f"{k} = {v}")
+
+        # for k, v in SparkSessionManager.spark_session.sparkContext._conf.getAll():
+        #     if isinstance(v, str) and "24h" in v:
+        #         print(f"{k} = {v}")
+
+        # hadoop_conf = SparkSessionManager.spark_session.sparkContext._jsc.hadoopConfiguration()
+        # for item in hadoop_conf.iterator():
+        #     key = item.getKey()
+        #     value = item.getValue()
+        #     if "24h" in value.lower():
+        #         print(f"{key} = {value}")
+
+
+
         return SparkSessionManager.spark_session
 
     @safe_run()

@@ -1,5 +1,6 @@
 """Interactions with Amazon S3"""
 
+from datetime import date
 from logging import Logger
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql import functions as F
@@ -8,18 +9,19 @@ import yaml
 from infrastructure.spark.spark_session_manager import SparkSessionManager
 from utils.safe_run import safe_run
 
+@safe_run()
+def load_s3_file_path(path="src/config/infra/s3.yaml"):
+    with open(path, 'r') as file:
+        config = yaml.safe_load(file)
+    raw_s3_bucket_path = config["s3"]["raw_bucket"]
+    raw_s3_bucket_path_with_date = f"{raw_s3_bucket_path}/{date.today().isoformat()}"
+    return raw_s3_bucket_path_with_date
 
 @safe_run()
 def write_raw_data_to_s3_bucket(
-    df: DataFrame, spark_session_manager: SparkSessionManager, logger: Logger
+    df: DataFrame, spark_session_manager: SparkSessionManager, logger: Logger, s3_filepath: str
 ):
-    with open("src/config/infra/s3.yaml", "r") as file:
-        config = yaml.safe_load(file)
-
     spark_session_manager.get_spark_session()
-
-    raw_s3_bucket_path = config["s3"]["raw_bucket"]
-    raw_s3_bucket_path_with_date = raw_s3_bucket_path + str(F.current_date())
 
     """
     The zip code column is partitioned using the modulo operation % 5 to ensure the data is evenly
@@ -34,7 +36,7 @@ def write_raw_data_to_s3_bucket(
     """
     df.write.option("useS3ListImplementation", "true").option(
         "compression", "snappy"
-    ).partitionBy("date_col").mode("overwrite").parquet(raw_s3_bucket_path_with_date)
+    ).partitionBy("date_col").mode("overwrite").parquet(s3_filepath)
 
     logger.info("The Spark DataFrame has been written to the raw S3 bucket")
 
