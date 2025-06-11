@@ -1,5 +1,9 @@
 on: [push, pull_request] # Runs the job upon pushing a commit or creating a pull request
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   ci:
     name: CI Job
@@ -7,6 +11,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          role-to-assume: arn:aws:iam::187065639894:role/github-oidc
+          aws-region: "eu-west-2"
 
       - name: Set Up Python
         uses: actions/setup-python@v5

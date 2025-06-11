@@ -107,7 +107,32 @@ def test_load_spark_config_success(tmp_path):
 
     Then:
         - The expected content is returned in a SparkConf object"""
-    yaml_content = {"spark": {"app_name": "integration-test-app", "master": "local[*]"}}
+    yaml_content = {
+        "spark": {
+            "app_name": "integration-test-app",
+            "master": "local[*]",
+            "jars_packages": "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.397",
+            "hadoop_aws_configs": {
+                "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.DefaultAWSCredentialsProviderChain",
+                # "fs.s3a.aws.credentials.provider": "com.amazonaws.auth.profile.ProfileCredentialsProvider",
+                "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+                "fs.s3a.vectored.read.min.seek.size": "131072",
+                "spark.hadoop.fs.s3a.vectored.read.max.merged.size": "2097152",
+                "fs.s3a.threads.keepalivetime": "60000",
+                "yarn.router.subcluster.cleaner.interval.time": "60000",
+                "yarn.resourcemanager.delegation-token-renewer.thread-retry-interval": "60000",
+                "yarn.resourcemanager.delegation-token-renewer.thread-timeout": "60000",
+                "fs.s3a.connection.establish.timeout": "30000",
+                "yarn.federation.state-store.heartbeat.initial-delay": "30000",
+                "yarn.federation.gpg.webapp.connect-timeout": "30000",
+                "yarn.federation.gpg.webapp.read-timeout": "30000",
+                "yarn.apps.cache.expire": "30000",
+                "hadoop.service.shutdown.timeout": "30000",
+                "fs.s3a.connection.timeout": "200000",
+                "fs.s3a.multipart.purge.age": "86400000",
+            },
+        }
+    }
 
     config_file = tmp_path / "spark_config.yaml"
     with config_file.open("w") as file:

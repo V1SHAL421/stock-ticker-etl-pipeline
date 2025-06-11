@@ -1,7 +1,22 @@
+import boto3
 import yaml
 from pyspark import SparkConf
 
 from utils.safe_run import safe_run
+
+
+@safe_run()
+def inject_boto3_sso_credentials(conf, profile_name="vishal-sso"):
+    session = boto3.Session(profile_name=profile_name)
+    creds = session.get_credentials().get_frozen_credentials()
+
+    conf.set("fs.s3a.access.key", creds.access_key)
+    conf.set("fs.s3a.secret.key", creds.secret_key)
+    conf.set("fs.s3a.session.token", creds.token)
+    conf.set(
+        "fs.s3a.aws.credentials.provider",
+        "org.apache.hadoop.fs.s3a.TemporaryAWSCredentialsProvider",
+    )
 
 
 @safe_run()
@@ -17,4 +32,11 @@ def load_spark_config(path: str = "src/config/spark_config.yaml") -> SparkConf:
     spark_attributes = spark_config["spark"]
     conf = SparkConf()
     conf.setAppName(spark_attributes["app_name"]).setMaster(spark_attributes["master"])
+
+    conf.set("spark.jars.packages", spark_attributes["jars_packages"])
+    for key, value in spark_attributes["hadoop_aws_configs"].items():
+        conf.set(key, value)
+
+    inject_boto3_sso_credentials(conf, profile_name="vishal-sso")
+
     return conf
