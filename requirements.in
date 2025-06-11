@@ -7,3 +7,4 @@ yfinance
 ruff
 mypy
 pytest-mock
+awsglue
