@@ -1,0 +1,4 @@
+s3:
+  main_raw_bucket: "s3a://main-raw-tick-data-bucket"
+  test_raw_bucket: "s3a://test-raw-tick-data-bucket"
+  clean_bucket: "s3a://clean-tick-data-bucket"
