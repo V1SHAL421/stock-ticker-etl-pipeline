@@ -33,11 +33,29 @@ export class S3BucketStack extends Stack {
       }
     )
 
-    // The code that defines your stack goes here
+    const main_cleaned_bucket = new Bucket(
+      this, // Refers to the stack that the bucket will be deployed to
+      "MainCleanedS3Bucket", // ID
+      {
+        bucketName: "main-cleaned-tick-data-bucket",
+        encryption: BucketEncryption.S3_MANAGED,
+        versioned: true,
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL, // No one can access bucket without permissions
+        removalPolicy: RemovalPolicy.DESTROY // The bucket deletes when the stack is deleted
+      }
+    )
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // Defining the Test Cleaned S3 Bucket
+    const test_cleaned_bucket = new Bucket(
+      this, // Refers to the stack that the bucket will be deployed to
+      "TestCleanedS3Bucket", // ID
+      {
+        bucketName: "test-cleaned-tick-data-bucket",
+        encryption: BucketEncryption.S3_MANAGED,
+        versioned: true,
+        blockPublicAccess: BlockPublicAccess.BLOCK_ALL, // No one can access bucket without permissions
+        removalPolicy: RemovalPolicy.DESTROY // The bucket deletes when the stack is deleted
+      }
+    ) 
   }
 }

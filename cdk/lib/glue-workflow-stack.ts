@@ -17,7 +17,7 @@ export class GlueWorkflowStack extends Stack {
     super(scope, id, props);
 
     const glue_db = new CfnDatabase(this, 'glue-workflow-db', {
-        catalogId: "glue-workflow-db",
+        catalogId: this.account,
         databaseInput: {
             name: "raw-tick-data",
             description: "Glue Database for storing raw tick data from the raw S3 bucket",
@@ -43,7 +43,7 @@ export class GlueWorkflowStack extends Stack {
 
     const glue_crawler_s3 = new CfnCrawler(this, "glue-crawler-s3", {
         name: "s3-parquet-crawler",
-        role: glue_crawler_role.roleName,
+        role: glue_crawler_role.roleArn,
         targets: {
             s3Targets: [
                 {
@@ -51,7 +51,7 @@ export class GlueWorkflowStack extends Stack {
                 }
             ]
         },
-        databaseName: glue_db.databaseName,
+        databaseName: glue_db.ref,
         schemaChangePolicy: {
             updateBehavior: "UPDATE_IN_DATABASE",
             deleteBehavior: "DEPRECATE_IN_DATABASE"
