@@ -7,6 +7,17 @@ export class S3BucketStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    // Defining the Logs Bucket for Glue Jobs
+    const glueLogBucket = new Bucket(
+      this,
+      "GlueLogBucket",
+      {
+        bucketName: "glue-job-logs-bucket",
+        removalPolicy: RemovalPolicy.DESTROY,
+        autoDeleteObjects: true
+      }
+    )
+
     // Defining the Main Raw S3 Bucket
     const main_raw_bucket = new Bucket(
       this, // Refers to the stack that the bucket will be deployed to
