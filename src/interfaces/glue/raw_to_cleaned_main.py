@@ -37,7 +37,7 @@ def run_raw_to_cleaned_pipeline():
         f"s3a://main-raw-tick-data-bucket/{date.today().isoformat()}"
     )
     cleaned_s3_bucket_filepath = (
-        f"s3a://main-clean-tick-data-bucket/{date.today().isoformat()}"
+        f"s3a://main-cleaned-tick-data-bucket/cleaned_data/"
     )
 
     df_raw = read_raw_tick_data(spark, raw_s3_bucket_filepath)
