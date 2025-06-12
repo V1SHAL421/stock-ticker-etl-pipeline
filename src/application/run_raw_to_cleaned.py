@@ -1,4 +1,5 @@
 """Conducts the Glue job from the raw S3 zone to the cleaned S3 zone"""
+
 from pyspark import SparkContext
 
 from domain.raw_to_cleaned.clean_raw_tick_data import clean_raw_tick_data

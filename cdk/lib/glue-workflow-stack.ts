@@ -1,5 +1,5 @@
 import { Stack, StackProps } from "aws-cdk-lib";
-import { ManagedPolicy, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { CfnCrawler, CfnDatabase, CfnJob } from 'aws-cdk-lib/aws-glue';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
@@ -41,6 +41,20 @@ export class GlueWorkflowStack extends Stack {
             )
         ]
     })
+
+    glue_crawler_role.addToPolicy(
+        new PolicyStatement({
+            actions: [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            resources: ["*"]
+        })
+    )
     this.glueRole = glue_crawler_role
 
     const glue_crawler_s3 = new CfnCrawler(this, "glue-crawler-s3", {
@@ -72,11 +86,20 @@ export class GlueWorkflowStack extends Stack {
         description: "Clean the raw tick data and output to cleaned S3 bucket",
         role: glue_crawler_role.roleArn,
         executionProperty: { maxConcurrentRuns: 1},
+        glueVersion: "4.0",
+        defaultArguments: {
+            "--TempDir": raw_s3_bucket_file_path + "temp/",
+            "--enable-job-insights": "false",
+            "--job-language": "python",
+            "--enable-continuous-logging": "true",
+            "--enable-metrics": "true"
+        },
         command: {
             name: "glueetl",
             pythonVersion: "3",
             scriptLocation: rawToCleanETLAsset.s3ObjectUrl
         },
+        logUri: "s3://glue-job-logs-bucket",
         maxRetries: 3,
         timeout: 60,
         workerType: "G.1X",

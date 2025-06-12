@@ -16,7 +16,6 @@ def setup():
 
 @pytest.mark.unit
 def test_get_spark_session(setup, mocker):
-
     """Tests the Spark Session Manager retrieves the Spark session
 
     Given:
