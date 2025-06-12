@@ -1,7 +1,9 @@
 import { Stack, StackProps } from "aws-cdk-lib";
 import { ManagedPolicy, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
-import { CfnCrawler, CfnDatabase } from 'aws-cdk-lib/aws-glue';
+import { CfnCrawler, CfnDatabase, CfnJob } from 'aws-cdk-lib/aws-glue';
+import { Asset } from "aws-cdk-lib/aws-s3-assets";
+import * as path from "path";
 // import * as glue from 'aws-cdk-lib/aws-glue';
 
 const glue_managed_policy = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole";
@@ -17,7 +19,7 @@ export class GlueWorkflowStack extends Stack {
     super(scope, id, props);
 
     const glue_db = new CfnDatabase(this, 'glue-workflow-db', {
-        catalogId: "glue-workflow-db",
+        catalogId: this.account,
         databaseInput: {
             name: "raw-tick-data",
             description: "Glue Database for storing raw tick data from the raw S3 bucket",
@@ -43,7 +45,7 @@ export class GlueWorkflowStack extends Stack {
 
     const glue_crawler_s3 = new CfnCrawler(this, "glue-crawler-s3", {
         name: "s3-parquet-crawler",
-        role: glue_crawler_role.roleName,
+        role: glue_crawler_role.roleArn,
         targets: {
             s3Targets: [
                 {
@@ -51,12 +53,35 @@ export class GlueWorkflowStack extends Stack {
                 }
             ]
         },
-        databaseName: glue_db.databaseName,
+        databaseName: glue_db.ref,
         schemaChangePolicy: {
             updateBehavior: "UPDATE_IN_DATABASE",
             deleteBehavior: "DEPRECATE_IN_DATABASE"
         }
     });
+
+    const rawToCleanETLAsset = new Asset(this, "raw-to-clean-etl", {
+        path: path.join(
+            __dirname,
+            "../../src/interfaces/glue/raw_to_cleaned_main.py"
+        )
+    })
+
+    const glue_job_asset = new CfnJob(this, "glue-job-asset", {
+        name: "glue-raw-to-clean-asset-job",
+        description: "Clean the raw tick data and output to cleaned S3 bucket",
+        role: glue_crawler_role.roleArn,
+        executionProperty: { maxConcurrentRuns: 1},
+        command: {
+            name: "glueetl",
+            pythonVersion: "3",
+            scriptLocation: rawToCleanETLAsset.s3ObjectUrl
+        },
+        maxRetries: 3,
+        timeout: 60,
+        workerType: "G.1X",
+        numberOfWorkers: 10
+    })
 
   }
 }

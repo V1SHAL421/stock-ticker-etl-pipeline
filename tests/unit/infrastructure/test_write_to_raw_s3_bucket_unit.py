@@ -20,7 +20,7 @@ def test_write_raw_data_to_s3_bucket_empty_df(mocker):
         )
 
 
-@pytest.mark.unit
+@pytest.mark.current
 def test_write_raw_data_to_s3_bucket_success(mocker):
     mock_spark_session_manager = mocker.Mock()
     mock_logger = mocker.Mock()
@@ -28,7 +28,9 @@ def test_write_raw_data_to_s3_bucket_success(mocker):
     mock_spark_session_manager.get_spark_session.return_value = mock_spark_session
     mock_spark_session_manager.stop_spark_session.return_value = mock_spark_session
     mock_df = mocker.Mock()
-    mock_df.isEmpty.return_value = False
+    mock_df_rdd = mocker.Mock()
+    mock_df.rdd = mock_df_rdd
+    mock_df_rdd.isEmpty.return_value = False
     mock_df.withColumn.return_value = mock_df
 
     mock_df_written = mocker.Mock()
