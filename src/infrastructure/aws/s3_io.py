@@ -47,7 +47,7 @@ def write_raw_data_to_s3_bucket(
         ""
     )
 
-    if df is None or df.isEmpty():
+    if df is None or df.rdd.isEmpty():
         raise ValueError("The Spark DataFrame does not have any data")
 
     if not s3_filepath.startswith("s3a://"):
@@ -78,14 +78,3 @@ def write_raw_data_to_s3_bucket(
 
     spark_session_manager.stop_spark_session()
 
-@safe_run()
-def write_cleaned_data_to_s3(df: DataFrame, s3_filepath: str):
-    if df is None or df.isEmpty():
-        raise ValueError("The Spark DataFrame does not have any data")
-
-    if not s3_filepath.startswith("s3a://"):
-        raise ValueError("The S3 file path is of an incorrect format")
-    
-    df.write.option("useS3ListImplementation", "true").option(
-        "compression", "snappy"
-    ).partitionBy("date_col").mode("overwrite").parquet(s3_filepath)
