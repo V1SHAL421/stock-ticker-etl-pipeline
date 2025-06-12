@@ -8,6 +8,7 @@ from infrastructure.aws.s3_io import load_s3_file_path
 from infrastructure.spark.spark_session_manager import SparkSessionManager
 from utils.main_logger import MainLogger
 
+
 @pytest.fixture
 def setup():
     main_logger = MainLogger()
@@ -18,6 +19,7 @@ def setup():
 
     yield logger, yfinance_client, raw_s3_filepath, spark_session_manager
 
+
 @pytest.fixture
 def s3_test_path():
     """Loads the file path to the test S3 bucket with today's date"""
@@ -27,6 +29,7 @@ def s3_test_path():
     test_path = config["s3"]["test_raw_bucket"]
     test_path_with_date = f"{test_path}/{date.today().isoformat()}"
     return test_path_with_date
+
 
 @pytest.mark.integration
 def test_run_ingest_data_to_s3(setup, s3_test_path):
@@ -42,4 +45,3 @@ def test_run_ingest_data_to_s3(setup, s3_test_path):
     assert stored_df.count() > 5
 
     spark_session_manager.stop_spark_session()
-    

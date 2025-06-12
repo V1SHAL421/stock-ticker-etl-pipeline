@@ -43,6 +43,7 @@ def test_pandas_into_spark_df_with_invalid_spark_session(mocker, pandas_df):
     with pytest.raises(Exception):
         pandas_into_spark_df(mock_spark_session, pandas_df, mock_logger)
 
+
 @pytest.mark.unit
 def test_pandas_into_spark_df_with_invalid_pandas_df(mocker, pandas_df):
     """Tests that pandas_into_spark_df with an invalid Spark session raises an Exception

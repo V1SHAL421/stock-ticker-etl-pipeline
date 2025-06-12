@@ -77,4 +77,3 @@ def write_raw_data_to_s3_bucket(
     logger.info("The Spark DataFrame has been written to the raw S3 bucket")
 
     spark_session_manager.stop_spark_session()
-
