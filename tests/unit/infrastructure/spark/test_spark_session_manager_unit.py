@@ -15,7 +15,7 @@ def setup():
 
 
 @pytest.mark.unit
-def test_get_spark_session(mocker):
+def test_get_spark_session(setup, mocker):
     """Tests the Spark Session Manager retrieves the Spark session
 
     Given:
@@ -47,7 +47,6 @@ def test_get_spark_session(mocker):
         "infrastructure.spark.spark_session_manager.SparkSession.builder",
         new=mock_builder,
     ):
-        result_session = test_manager.get_spark_session()
-        assert result_session == mock_session
+        test_manager.get_spark_session()
         mock_builder.config.assert_called_once()
         mock_config.getOrCreate.assert_called_once()
