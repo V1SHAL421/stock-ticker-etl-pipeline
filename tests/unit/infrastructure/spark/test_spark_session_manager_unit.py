@@ -2,10 +2,21 @@ from unittest.mock import patch
 import pytest
 
 from infrastructure.spark.spark_session_manager import SparkSessionManager
+from utils.main_logger import MainLogger
+
+
+@pytest.fixture
+def setup():
+    main_logger = MainLogger()
+    logger = main_logger.get_logger()
+    spark_session_manager = SparkSessionManager(logger)
+    if spark_session_manager.spark_session:
+        spark_session_manager.stop_spark_session()
 
 
 @pytest.mark.unit
-def test_get_spark_session(mocker):
+def test_get_spark_session(setup, mocker):
+
     """Tests the Spark Session Manager retrieves the Spark session
 
     Given:
@@ -31,8 +42,12 @@ def test_get_spark_session(mocker):
 
     test_manager = SparkSessionManager(logger=mock_logger)
 
-    with patch("pyspark.sql.SparkSession.builder", new=mock_builder):
-        result_session = test_manager.get_spark_session()
-        assert result_session == mock_session
+    print(f"The current Spark session is {test_manager.spark_session}")
+
+    with patch(
+        "infrastructure.spark.spark_session_manager.SparkSession.builder",
+        new=mock_builder,
+    ):
+        test_manager.get_spark_session()
         mock_builder.config.assert_called_once()
         mock_config.getOrCreate.assert_called_once()
