@@ -52,7 +52,10 @@ export class GlueWorkflowStack extends Stack {
                 "s3:PutObject",
                 "s3:DeleteObject"
             ],
-            resources: ["*"]
+            resources: [
+                "arn:aws:s3:::main-raw-tick-data-bucket",
+                "arn:aws:s3:::main-raw-tick-data-bucket/*" 
+            ]
         })
     )
     this.glueRole = glue_crawler_role

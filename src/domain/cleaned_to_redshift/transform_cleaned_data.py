@@ -1,11 +1,6 @@
-"""The entry point for the Glue job to transform and load S3 data into Redshift"""
+"""Transform data"""
 
-import sys
-from pyspark import SparkContext
-from awsglue.context import GlueContext
 from pyspark.sql.dataframe import DataFrame
-from pyspark.sql import SparkSession, functions as F
-from pyspark.sql.window import Window, WindowSpec
 from pyspark.sql.functions import (
     avg as spark_avg,
     col,
@@ -17,16 +12,7 @@ from pyspark.sql.functions import (
     sum as spark_sum,
     when,
 )
-
-"""Read cleaned tick data"""
-
-
-def read_cleaned_tick_data(spark: SparkSession, s3_filepath: str):
-    parquet_df = spark.read.parquet(s3_filepath)
-    return parquet_df
-
-
-"""Transform data"""
+from pyspark.sql.window import WindowSpec
 
 
 def rolling_returns(df: DataFrame, rolling_window: WindowSpec):
@@ -89,46 +75,3 @@ def rsi(df: DataFrame, rolling_window: WindowSpec):
     df_rsi = df_rs.withColumn("rsi", 100 - (100 / (1 + col("rs"))))
     df_rsi_filtered = df_rsi.drop("gains", "losses", "avg_gains", "avg_losses", "rs")
     return df_rsi_filtered
-
-
-def transform_cleaned_data(df: DataFrame):
-    lag_rolling_window = Window.orderBy("date_col")
-    ten_day_rolling_window = Window.orderBy("date_col").rowsBetween(-9, 0)
-    fourteen_day_rolling_window = Window.orderBy("date_col").rowsBetween(-13, 0)
-
-    df_rolling_returns = rolling_returns(df, lag_rolling_window)
-    df_momentum = momentum(df_rolling_returns, lag_rolling_window)
-    df_vwap = vwap(df_momentum, ten_day_rolling_window)
-    df_volatility = volatility(df_vwap, ten_day_rolling_window)
-    df_rsi = rsi(df_volatility, fourteen_day_rolling_window)
-
-    return df_rsi
-
-
-"""Load transformed data to Redshift"""
-
-
-def load_transformed_data_to_redshift(df):
-    pass
-
-
-def run_cleaned_to_redshift_pipeline():
-    glue_context = GlueContext(SparkContext.getOrCreate())
-    spark = glue_context.spark_session
-    current_date = F.current_date()
-    cleaned_s3_bucket_filepath = (
-        f"s3a://main-cleaned-tick-data-bucket/cleaned_data/date_col={current_date}"
-    )
-    df = read_cleaned_tick_data(spark, cleaned_s3_bucket_filepath)
-    df_transformed = transform_cleaned_data(df)
-    load_transformed_data_to_redshift(df_transformed)
-
-
-def main(argv=None):
-    if argv is None:
-        argv = sys.argv
-    run_cleaned_to_redshift_pipeline()
-
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv))

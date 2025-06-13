@@ -20,7 +20,7 @@ def test_write_raw_data_to_s3_bucket_empty_df(mocker):
         )
 
 
-@pytest.mark.current
+@pytest.mark.unit
 def test_write_raw_data_to_s3_bucket_success(mocker):
     mock_spark_session_manager = mocker.Mock()
     mock_logger = mocker.Mock()

@@ -33,12 +33,13 @@ def s3_test_path():
 
 @pytest.mark.integration
 def test_run_ingest_data_to_s3(setup, s3_test_path):
-    logger, yfinance_client, _, spark_session_manager = setup
-    run_ingest_data_to_s3(logger, yfinance_client, s3_test_path)
+    print("Test is running")
+    logger, yfinance_client, s3_raw_filepath, spark_session_manager = setup
+    run_ingest_data_to_s3(logger, yfinance_client, s3_raw_filepath)
     assert spark_session_manager.spark_session is None
 
     spark = spark_session_manager.get_spark_session()
-    stored_df = spark.read.parquet(f"{s3_test_path}")
+    stored_df = spark.read.parquet(f"{s3_raw_filepath}")
 
     print(stored_df.count())
 
