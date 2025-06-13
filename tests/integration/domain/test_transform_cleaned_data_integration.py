@@ -1,6 +1,5 @@
 from datetime import date
 import pytest
-from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.window import Window
 from pyspark.sql.types import StructType, StructField, DoubleType, LongType, StringType, DateType
 import numpy as np

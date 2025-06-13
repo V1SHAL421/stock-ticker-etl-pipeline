@@ -59,11 +59,12 @@ def rsi(df: DataFrame, rolling_window: WindowSpec):
     return df_rsi_filtered
 
 def transform_cleaned_data(df: DataFrame):
-    ten_day_rolling_window = Window.rowsBetween(-9, 0)
-    fourteen_day_rolling_window = Window.rowsBetween(-13, 0)
+    lag_rolling_window = Window.orderBy("date_col")
+    ten_day_rolling_window = Window.orderBy("date_col").rowsBetween(-9, 0)
+    fourteen_day_rolling_window = Window.orderBy("date_col").rowsBetween(-13, 0)
 
-    df_rolling_returns = rolling_returns(df, ten_day_rolling_window)
-    df_momentum = momentum(df_rolling_returns, ten_day_rolling_window)
+    df_rolling_returns = rolling_returns(df, lag_rolling_window)
+    df_momentum = momentum(df_rolling_returns, lag_rolling_window)
     df_vwap = vwap(df_momentum, ten_day_rolling_window)
     df_volatility = volatility(df_vwap, ten_day_rolling_window)
     df_rsi = rsi(df_volatility, fourteen_day_rolling_window)
