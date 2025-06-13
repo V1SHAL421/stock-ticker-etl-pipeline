@@ -48,16 +48,6 @@ def rsi(df: DataFrame, rolling_window: WindowSpec):
     df_rsi_filtered = df_rsi.drop("gains", "losses", "avg_gains", "avg_losses", "rs")
     return df_rsi_filtered
 
-def rsi(df: DataFrame, rolling_window: WindowSpec):
-    df_gains = df.withColumn("gains", when(col("rolling_returns" >= 0)).otherwise(0), col("rolling_returns"))
-    df_losses = df_gains.withColumn("losses", when(col("rolling_returns" < 0)).otherwise(0), col("rolling_returns"))
-    df_avg_gains = df_losses.withColumn("avg_gains", spark_avg("gains").over(rolling_window))
-    df_avg_losses = df_avg_gains.withColumn("avg_losses", spark_avg("losses").over(rolling_window))
-    df_rs = df_avg_losses.withColumn("rs", col("avg_gains") / col("avg_losses"))
-    df_rsi = df_rs.withColumn("rsi", 100 - (100 / (1 + col("rs"))))
-    df_rsi_filtered = df_rsi.drop("gains", "losses", "avg_gains", "avg_losses", "rs")
-    return df_rsi_filtered
-
 def transform_cleaned_data(df: DataFrame):
     lag_rolling_window = Window.orderBy("date_col")
     ten_day_rolling_window = Window.orderBy("date_col").rowsBetween(-9, 0)
