@@ -2,7 +2,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { S3BucketStack } from '../lib/s3-bucket-stack';
 import { GlueWorkflowStack } from '../lib/glue-workflow-stack';
-import { RedshiftClusterStack } from '../lib/redshift-cluster-stack';
 
 const app = new cdk.App();
 
@@ -17,9 +16,3 @@ const glue_workflow_stack = new GlueWorkflowStack(app, 'glue-workflow-stack', {
   stackName: 'GlueWorkflowStack',
   description: 'Creates the Glue Workflow'
 })
-
-const redshift_stack = new RedshiftClusterStack(app, 'redshift-cluster-stack', {
-  env: { account: '187065639894', region: 'eu-west-2'},
-  stackName: 'RedshiftClusterStack',
-  description: 'Creates the Redshift Database'
-});

@@ -1,6 +1,7 @@
 """The entry point for the Glue job to transform and load S3 data into Redshift"""
 
 import sys
+import boto3
 from pyspark import SparkContext
 from awsglue.context import GlueContext
 from pyspark.sql.dataframe import DataFrame
@@ -108,8 +109,21 @@ def transform_cleaned_data(df: DataFrame):
 """Load transformed data to Redshift"""
 
 
-def load_transformed_data_to_redshift(df):
-    pass
+def copy_transformed_data_to_redshift(filepath):
+    redshift = boto3.client("redshift-data", region_name="eu-west-2")
+
+    redshift.execute_statement(
+        ClusterIdentifier="Redshift",
+        Database="redshift_database",
+        DbUser="adminuser",
+        Sql="""
+            COPY MarketData
+            FROM 's3://main-cleaned-tick-data-bucket/cleaned_data/'
+            IAM_ROLE 'arn:aws:iam::account-id:role/your-redshift-role'
+            FORMAT AS CSV
+            IGNOREHEADER 1;
+        """
+    )
 
 
 def run_cleaned_to_redshift_pipeline():
@@ -119,9 +133,9 @@ def run_cleaned_to_redshift_pipeline():
     cleaned_s3_bucket_filepath = (
         f"s3a://main-cleaned-tick-data-bucket/cleaned_data/date_col={current_date}"
     )
-    df = read_cleaned_tick_data(spark, cleaned_s3_bucket_filepath)
-    df_transformed = transform_cleaned_data(df)
-    load_transformed_data_to_redshift(df_transformed)
+    # df = read_cleaned_tick_data(spark, cleaned_s3_bucket_filepath)
+    # df_transformed = transform_cleaned_data(df)
+    copy_transformed_data_to_redshift(cleaned_s3_bucket_filepath)
 
 
 def main(argv=None):
