@@ -1,5 +1,5 @@
 # Stock Ticker ETL Pipeline
-An ETL pipeline constructed to ingest ticker data from Yahoo! Finance's API into a data lake and then transform the data before loading it into a data warehouse for querying.
+An ETL pipeline constructed to ingest ticker data from Yahoo! Finance's API into a data lake and then transform the data before loading it into a data warehouse for querying. Click here for more documentation: https://deepwiki.com/V1SHAL421/stock-ticker-etl-pipeline
 ### Tick Data
 The tick data is being ingested from Yahoo! Finance's API through a Python library called yfinance.
 
